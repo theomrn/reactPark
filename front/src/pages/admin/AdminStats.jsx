@@ -34,7 +34,7 @@ export default function AdminStats() {
               <XAxis dataKey="name" tick={{ fontSize: 12 }} />
               <YAxis unit="%" tick={{ fontSize: 12 }} domain={[0, 100]} />
               <Tooltip formatter={v => `${v}%`} />
-              <Bar dataKey="occupancyRate" name="Taux d'occupation" fill="#2563eb" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="occupancyRate" name="Taux d'occupation" fill="#0000FF" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -54,7 +54,7 @@ export default function AdminStats() {
                 type="monotone"
                 dataKey="count"
                 name="Réservations"
-                stroke="#2563eb"
+                stroke="#00A0F3"
                 strokeWidth={2}
                 dot={false}
               />

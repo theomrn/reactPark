@@ -4,9 +4,8 @@
   justify-content: space-between;
   padding: 0 2rem;
   height: 60px;
-  background: #fff;
-  border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  background: var(--color-dark);
+  border-bottom: 2px solid rgba(255, 158, 66, 0.3);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -14,8 +13,10 @@
 
 .brand {
   font-size: 1.2rem;
-  font-weight: 700;
-  color: #2563eb;
+  font-weight: 800;
+  color: var(--color-accent);
+  letter-spacing: 0.02em;
+  text-decoration: none;
 }
 
 .links {
@@ -25,7 +26,7 @@
 }
 
 .links a {
-  color: #374151;
+  color: rgba(255, 255, 255, 0.85);
   text-decoration: none;
   font-size: 0.95rem;
   font-weight: 500;
@@ -33,20 +34,38 @@
 }
 
 .links a:hover {
-  color: #2563eb;
+  color: var(--color-secondary);
 }
 
 .logout {
   background: none;
-  border: 1px solid #d1d5db;
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 6px;
-  padding: 0.35rem 0.8rem;
+  padding: 0.35rem 0.9rem;
   cursor: pointer;
   font-size: 0.9rem;
-  color: #374151;
-  transition: background 0.15s;
+  color: rgba(255, 255, 255, 0.85);
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
 }
 
 .logout:hover {
-  background: #f3f4f6;
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: rgba(255, 158, 66, 0.08);
+}
+
+.loginBtn {
+  padding: 0.4rem 1rem;
+  background: var(--color-accent);
+  color: var(--color-dark) !important;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.loginBtn:hover {
+  background: var(--color-accent-hover) !important;
+  color: var(--color-dark) !important;
 }

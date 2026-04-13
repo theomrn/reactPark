@@ -7,7 +7,7 @@
 .container h1 {
   margin-bottom: 1.5rem;
   font-size: 1.6rem;
-  color: #111827;
+  color: var(--color-heading-on-bg);
 }
 
 .grid {
@@ -17,48 +17,55 @@
 }
 
 .card {
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--color-primary);
   border-radius: 10px;
   padding: 1.5rem;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 .card h2 {
   margin: 0;
   font-size: 1.1rem;
-  color: #111827;
+  color: var(--color-dark);
 }
 
 .address {
-  color: #6b7280;
+  color: var(--color-muted);
   font-size: 0.9rem;
   margin: 0;
 }
 
 .spots {
   font-size: 0.9rem;
-  color: #374151;
+  color: var(--color-text);
   margin: 0.25rem 0;
 }
 
 .available {
   font-weight: 700;
-  color: #16a34a;
+  color: var(--color-success);
 }
 
 .full {
   font-weight: 700;
-  color: #dc2626;
+  color: var(--color-danger);
 }
 
 .btn {
   margin-top: auto;
   padding: 0.55rem 1rem;
-  background: #2563eb;
+  background: var(--color-primary);
   color: #fff;
   border-radius: 6px;
   text-decoration: none;
@@ -69,10 +76,10 @@
 }
 
 .btn:hover {
-  background: #1d4ed8;
+  background: var(--color-primary-hover);
 }
 
 .error {
-  color: #dc2626;
+  color: var(--color-danger);
   font-size: 0.9rem;
 }

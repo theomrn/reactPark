@@ -4,14 +4,41 @@
   padding: 0;
 }
 
+:root {
+  --color-bg: #FAF8F2;
+  --color-surface: #ffffff;
+  --color-primary: #0000FF;
+  --color-primary-hover: #0000CC;
+  --color-secondary: #00A0F3;
+  --color-secondary-hover: #0085CC;
+  --color-dark: #060035;
+  --color-accent: #FF9E42;
+  --color-accent-hover: #e8892a;
+  --color-text: #060035;
+  --color-muted: #5a547a;
+  --color-border: #ddd8f0;
+  --color-danger: #dc2626;
+  --color-danger-hover: #b91c1c;
+  --color-success: #16a34a;
+  --radius: 8px;
+  --shadow-sm: 0 1px 4px rgba(6, 0, 53, 0.08);
+  --shadow-md: 0 4px 12px rgba(6, 0, 53, 0.12);
+  --color-heading-on-bg: #ffffff;
+}
+
 html {
   font-size: 16px;
 }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
-  background: #f9fafb;
-  color: #111827;
+  background-color: var(--color-bg);
+  background-image: url('/Gestion moderne de parking lumineux.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  color: var(--color-text);
   line-height: 1.5;
   min-height: 100vh;
 }

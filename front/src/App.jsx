@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import Navbar from './components/Navbar'
+import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import ParkingList from './pages/user/ParkingList'
@@ -12,9 +13,9 @@ import AdminParkings from './pages/admin/AdminParkings'
 import ParkingForm from './pages/admin/ParkingForm'
 import AdminStats from './pages/admin/AdminStats'
 
-function RootRedirect() {
+function HomeRoute() {
   const { user } = useAuth()
-  if (!user) return <Navigate to="/login" replace />
+  if (!user) return <Home />
   return <Navigate to={user.role === 'ADMIN' ? '/admin/parkings' : '/user/parkings'} replace />
 }
 
@@ -23,7 +24,7 @@ function AppRoutes() {
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<RootRedirect />} />
+        <Route path="/" element={<HomeRoute />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 

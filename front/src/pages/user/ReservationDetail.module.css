@@ -8,8 +8,9 @@
   display: inline-block;
   margin-bottom: 1.25rem;
   font-size: 0.9rem;
-  color: #2563eb;
+  color: var(--color-secondary);
   text-decoration: none;
+  font-weight: 500;
 }
 
 .back:hover {
@@ -17,17 +18,18 @@
 }
 
 .card {
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--color-accent);
   border-radius: 10px;
   padding: 2rem;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-sm);
 }
 
 .card h1 {
   margin: 0 0 1.5rem;
   font-size: 1.4rem;
-  color: #111827;
+  color: var(--color-dark);
 }
 
 .details {
@@ -42,16 +44,16 @@
   justify-content: space-between;
   font-size: 0.95rem;
   padding-bottom: 0.65rem;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .row span {
-  color: #6b7280;
+  color: var(--color-muted);
 }
 
-.active { color: #16a34a; }
-.cancelled { color: #dc2626; }
-.expired { color: #9ca3af; }
+.active { color: var(--color-success); font-weight: 600; }
+.cancelled { color: var(--color-danger); font-weight: 600; }
+.expired { color: var(--color-muted); font-weight: 600; }
 
 .qr {
   display: flex;
@@ -59,28 +61,28 @@
   align-items: center;
   gap: 0.75rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--color-border);
 }
 
 .qr h2 {
   margin: 0;
   font-size: 1rem;
-  color: #374151;
+  color: var(--color-dark);
 }
 
 .qrHint {
   font-size: 0.85rem;
-  color: #6b7280;
+  color: var(--color-muted);
   margin: 0;
 }
 
 .error {
-  color: #dc2626;
+  color: var(--color-danger);
   font-size: 0.9rem;
 }
 
 .loading {
   text-align: center;
   margin-top: 3rem;
-  color: #6b7280;
+  color: var(--color-muted);
 }

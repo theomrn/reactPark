@@ -8,12 +8,12 @@ export default function Navbar() {
 
   function handleLogout() {
     logout()
-    navigate('/login')
+    navigate('/')
   }
 
   return (
     <nav className={styles.nav}>
-      <span className={styles.brand}>ParkingApp</span>
+      <Link to="/" className={styles.brand}>ParkingApp</Link>
       <div className={styles.links}>
         {user?.role === 'USER' && (
           <>
@@ -27,10 +27,12 @@ export default function Navbar() {
             <Link to="/admin/stats">Statistiques</Link>
           </>
         )}
-        {user && (
+        {user ? (
           <button onClick={handleLogout} className={styles.logout}>
             Déconnexion
           </button>
+        ) : (
+          <Link to="/login" className={styles.loginBtn}>Se connecter</Link>
         )}
       </div>
     </nav>
