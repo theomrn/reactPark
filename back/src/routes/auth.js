@@ -5,6 +5,10 @@ import prisma from '../lib/prisma.js'
 
 const router = Router()
 
+function signToken({ id, email, role }) {
+  return jwt.sign({ id, email, role }, process.env.JWT_SECRET, { expiresIn: '7d' })
+}
+
 router.post('/register', async (req, res) => {
   const { email, password } = req.body
   if (!email || !password) {
@@ -22,7 +26,7 @@ router.post('/register', async (req, res) => {
     select: { id: true, email: true, role: true },
   })
 
-  const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' })
+  const token = signToken(user)
   return res.status(201).json({ data: { token, user }, error: null })
 })
 
@@ -43,7 +47,7 @@ router.post('/login', async (req, res) => {
   }
 
   const payload = { id: user.id, email: user.email, role: user.role }
-  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' })
+  const token = signToken(payload)
   return res.json({ data: { token, user: payload }, error: null })
 })
 

@@ -7,7 +7,7 @@ import reservationRoutes from './routes/reservations.js'
 import statsRoutes from './routes/stats.js'
 
 const app = express()
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT || 3002
 
 app.use(cors({ origin: 'http://localhost:5173' }))
 app.use(express.json())
@@ -24,5 +24,4 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(`Backend démarré sur http://localhost:${PORT}`)
-
 })

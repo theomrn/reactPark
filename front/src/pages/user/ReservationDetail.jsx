@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { getMyReservations } from '../../api/reservations'
+import { getReservationById } from '../../api/reservations'
 import QRDisplay from '../../components/QRDisplay'
+import { RESERVATION_STATUS_LABELS } from '../../constants/reservation'
 import styles from './ReservationDetail.module.css'
-
-const STATUS_LABELS = { ACTIVE: 'Active', CANCELLED: 'Annulée', EXPIRED: 'Expirée' }
 
 export default function ReservationDetail() {
   const { id } = useParams()
@@ -12,11 +11,9 @@ export default function ReservationDetail() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    getMyReservations().then(({ data, error: err }) => {
-      if (err) { setError(err); return }
-      const found = data.find(r => r.id === parseInt(id))
-      if (!found) setError('Réservation introuvable.')
-      else setReservation(found)
+    getReservationById(id).then(({ data, error: err }) => {
+      if (err) setError(err)
+      else setReservation(data)
     }).catch(() => setError('Impossible de charger la réservation.'))
   }, [id])
 
@@ -54,7 +51,7 @@ export default function ReservationDetail() {
           <div className={styles.row}>
             <span>Statut</span>
             <strong className={styles[reservation.status.toLowerCase()]}>
-              {STATUS_LABELS[reservation.status]}
+              {RESERVATION_STATUS_LABELS[reservation.status]}
             </strong>
           </div>
         </div>

@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getMyReservations, cancelReservation } from '../../api/reservations'
+import { RESERVATION_STATUSES, RESERVATION_TAB_LABELS } from '../../constants/reservation'
 import styles from './ReservationList.module.css'
-
-const TABS = ['ACTIVE', 'CANCELLED', 'EXPIRED']
-const TAB_LABELS = { ACTIVE: 'Actives', CANCELLED: 'Annulées', EXPIRED: 'Expirées' }
 
 export default function ReservationList() {
   const [reservations, setReservations] = useState([])
@@ -22,8 +20,8 @@ export default function ReservationList() {
 
   async function handleCancel(id) {
     const { error: err } = await cancelReservation(id)
-    if (err) setError(err)
-    else load()
+    if (err) { setError(err); return }
+    setReservations(prev => prev.map(r => r.id === id ? { ...r, status: 'CANCELLED' } : r))
   }
 
   const filtered = reservations.filter(r => r.status === tab)
@@ -33,13 +31,13 @@ export default function ReservationList() {
       <h1>Mes réservations</h1>
       {error && <p className={styles.error}>{error}</p>}
       <div className={styles.tabs}>
-        {TABS.map(t => (
+        {RESERVATION_STATUSES.map(t => (
           <button
             key={t}
             className={`${styles.tab} ${tab === t ? styles.active : ''}`}
             onClick={() => setTab(t)}
           >
-            {TAB_LABELS[t]}
+            {RESERVATION_TAB_LABELS[t]}
           </button>
         ))}
       </div>

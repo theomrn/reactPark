@@ -4,16 +4,34 @@ import { requireAuth } from '../middleware/auth.js'
 
 const router = Router()
 
+const RESERVATION_INCLUDE = { spot: { include: { parking: true } } }
+
+router.param('id', (req, res, next, val) => {
+  req.params.id = parseInt(val, 10)
+  if (isNaN(req.params.id)) return res.status(400).json({ data: null, error: 'ID invalide.' })
+  next()
+})
+
 router.get('/mine', requireAuth, async (req, res) => {
   const reservations = await prisma.reservation.findMany({
     where: { userId: req.user.id },
-    include: {
-      spot: { include: { parking: true } },
-    },
+    include: RESERVATION_INCLUDE,
     orderBy: { createdAt: 'desc' },
   })
 
   return res.json({ data: reservations, error: null })
+})
+
+router.get('/:id', requireAuth, async (req, res) => {
+  const { id } = req.params
+  const reservation = await prisma.reservation.findUnique({
+    where: { id },
+    include: RESERVATION_INCLUDE,
+  })
+  if (!reservation || reservation.userId !== req.user.id) {
+    return res.status(404).json({ data: null, error: 'Réservation introuvable.' })
+  }
+  return res.json({ data: reservation, error: null })
 })
 
 router.post('/', requireAuth, async (req, res) => {
@@ -30,14 +48,15 @@ router.post('/', requireAuth, async (req, res) => {
     return res.status(400).json({ data: null, error: 'Dates invalides.' })
   }
 
-  const spot = await prisma.spot.findUnique({ where: { id: parseInt(spotId) } })
+  const parsedSpotId = parseInt(spotId, 10)
+  const spot = await prisma.spot.findUnique({ where: { id: parsedSpotId } })
   if (!spot) {
     return res.status(400).json({ data: null, error: 'Place introuvable.' })
   }
 
   const conflict = await prisma.reservation.findFirst({
     where: {
-      spotId: parseInt(spotId),
+      spotId: parsedSpotId,
       status: 'ACTIVE',
       AND: [
         { startDate: { lt: end } },
@@ -53,22 +72,20 @@ router.post('/', requireAuth, async (req, res) => {
   const reservation = await prisma.reservation.create({
     data: {
       userId: req.user.id,
-      spotId: parseInt(spotId),
+      spotId: parsedSpotId,
       startDate: start,
       endDate: end,
       qrToken: crypto.randomUUID(),
       status: 'ACTIVE',
     },
-    include: {
-      spot: { include: { parking: true } },
-    },
+    include: RESERVATION_INCLUDE,
   })
 
   return res.status(201).json({ data: reservation, error: null })
 })
 
 router.delete('/:id', requireAuth, async (req, res) => {
-  const id = parseInt(req.params.id)
+  const { id } = req.params
 
   const reservation = await prisma.reservation.findUnique({ where: { id } })
   if (!reservation) {

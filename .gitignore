@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+back/.env
+
+# Build
+front/dist/
+front/dist-ssr/
+
+# Database
+back/prisma/dev.db
+back/prisma/dev.db-journal
+back/prisma/*.db-shm
+back/prisma/*.db-wal
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.suo
+*.sw?
+
+# Vite
+front/*.local
