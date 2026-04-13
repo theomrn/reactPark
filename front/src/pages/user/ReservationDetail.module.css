@@ -1,0 +1,86 @@
+.container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+.back {
+  display: inline-block;
+  margin-bottom: 1.25rem;
+  font-size: 0.9rem;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.back:hover {
+  text-decoration: underline;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.card h1 {
+  margin: 0 0 1.5rem;
+  font-size: 1.4rem;
+  color: #111827;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-bottom: 2rem;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.row span {
+  color: #6b7280;
+}
+
+.active { color: #16a34a; }
+.cancelled { color: #dc2626; }
+.expired { color: #9ca3af; }
+
+.qr {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.qr h2 {
+  margin: 0;
+  font-size: 1rem;
+  color: #374151;
+}
+
+.qrHint {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.error {
+  color: #dc2626;
+  font-size: 0.9rem;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 3rem;
+  color: #6b7280;
+}
