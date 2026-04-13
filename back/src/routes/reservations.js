@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import prisma from '../lib/prisma.js'
 import { requireAuth } from '../middleware/auth.js'
+import { wrap } from '../lib/asyncHandler.js'
 
 const router = Router()
 
@@ -12,7 +13,7 @@ router.param('id', (req, res, next, val) => {
   next()
 })
 
-router.get('/mine', requireAuth, async (req, res) => {
+router.get('/mine', requireAuth, wrap(async (req, res) => {
   const reservations = await prisma.reservation.findMany({
     where: { userId: req.user.id },
     include: RESERVATION_INCLUDE,
@@ -20,9 +21,9 @@ router.get('/mine', requireAuth, async (req, res) => {
   })
 
   return res.json({ data: reservations, error: null })
-})
+}))
 
-router.get('/:id', requireAuth, async (req, res) => {
+router.get('/:id', requireAuth, wrap(async (req, res) => {
   const { id } = req.params
   const reservation = await prisma.reservation.findUnique({
     where: { id },
@@ -32,9 +33,9 @@ router.get('/:id', requireAuth, async (req, res) => {
     return res.status(404).json({ data: null, error: 'Réservation introuvable.' })
   }
   return res.json({ data: reservation, error: null })
-})
+}))
 
-router.post('/', requireAuth, async (req, res) => {
+router.post('/', requireAuth, wrap(async (req, res) => {
   const { spotId, startDate, endDate } = req.body
 
   if (!spotId || !startDate || !endDate) {
@@ -82,9 +83,9 @@ router.post('/', requireAuth, async (req, res) => {
   })
 
   return res.status(201).json({ data: reservation, error: null })
-})
+}))
 
-router.delete('/:id', requireAuth, async (req, res) => {
+router.delete('/:id', requireAuth, wrap(async (req, res) => {
   const { id } = req.params
 
   const reservation = await prisma.reservation.findUnique({ where: { id } })
@@ -106,6 +107,6 @@ router.delete('/:id', requireAuth, async (req, res) => {
   })
 
   return res.json({ data: updated, error: null })
-})
+}))
 
 export default router

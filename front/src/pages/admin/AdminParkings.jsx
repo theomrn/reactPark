@@ -57,6 +57,12 @@ export default function AdminParkings() {
                     Modifier
                   </button>
                   <button
+                    onClick={() => navigate(`/admin/parkings/${p.id}/map`)}
+                    className={styles.btnMap}
+                  >
+                    Carte
+                  </button>
+                  <button
                     onClick={() => handleDelete(p.id)}
                     className={styles.btnDelete}
                   >

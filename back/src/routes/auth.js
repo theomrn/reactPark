@@ -2,6 +2,7 @@ import { Router } from 'express'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import prisma from '../lib/prisma.js'
+import { wrap } from '../lib/asyncHandler.js'
 
 const router = Router()
 
@@ -9,7 +10,7 @@ function signToken({ id, email, role }) {
   return jwt.sign({ id, email, role }, process.env.JWT_SECRET, { expiresIn: '7d' })
 }
 
-router.post('/register', async (req, res) => {
+router.post('/register', wrap(async (req, res) => {
   const { email, password } = req.body
   if (!email || !password) {
     return res.status(400).json({ data: null, error: 'Email et mot de passe requis.' })
@@ -28,9 +29,9 @@ router.post('/register', async (req, res) => {
 
   const token = signToken(user)
   return res.status(201).json({ data: { token, user }, error: null })
-})
+}))
 
-router.post('/login', async (req, res) => {
+router.post('/login', wrap(async (req, res) => {
   const { email, password } = req.body
   if (!email || !password) {
     return res.status(400).json({ data: null, error: 'Email et mot de passe requis.' })
@@ -49,6 +50,6 @@ router.post('/login', async (req, res) => {
   const payload = { id: user.id, email: user.email, role: user.role }
   const token = signToken(payload)
   return res.json({ data: { token, user: payload }, error: null })
-})
+}))
 
 export default router

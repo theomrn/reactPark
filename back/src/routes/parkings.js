@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import prisma from '../lib/prisma.js'
 import { requireAdmin } from '../middleware/auth.js'
+import { wrap } from '../lib/asyncHandler.js'
 
 const router = Router()
 
@@ -14,7 +15,7 @@ function notFound(res, label = 'Ressource') {
   return res.status(404).json({ data: null, error: `${label} introuvable.` })
 }
 
-router.get('/', async (req, res) => {
+router.get('/', wrap(async (req, res) => {
   const parkings = await prisma.parking.findMany({
     include: {
       _count: { select: { spots: { where: { reservations: { none: { status: 'ACTIVE' } } } } } },
@@ -30,9 +31,9 @@ router.get('/', async (req, res) => {
   }))
 
   return res.json({ data, error: null })
-})
+}))
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', wrap(async (req, res) => {
   const { id } = req.params
   const parking = await prisma.parking.findUnique({
     where: { id },
@@ -41,30 +42,40 @@ router.get('/:id', async (req, res) => {
 
   if (!parking) return notFound(res, 'Parking')
   return res.json({ data: parking, error: null })
-})
+}))
 
-router.post('/', requireAdmin, async (req, res) => {
-  const { name, address, totalSpots } = req.body
+router.post('/', requireAdmin, wrap(async (req, res) => {
+  const { name, address, totalSpots, cols: rawCols } = req.body
   if (!name || !address || !totalSpots || totalSpots < 1) {
     return res.status(400).json({ data: null, error: 'Nom, adresse et nombre de places requis.' })
   }
+
+  const n = parseInt(totalSpots)
+  const cols = Math.max(1, parseInt(rawCols) || 5)
 
   const parking = await prisma.parking.create({
     data: {
       name,
       address,
-      totalSpots: parseInt(totalSpots),
+      totalSpots: n,
+      cols,
+      entranceCol: Math.floor(cols / 2),
+      entranceRow: 0,
       spots: {
-        create: Array.from({ length: parseInt(totalSpots) }, (_, i) => ({ number: String(i + 1) })),
+        create: Array.from({ length: n }, (_, i) => ({
+          number: String(i + 1),
+          col: i % cols,
+          row: Math.floor(i / cols),
+        })),
       },
     },
     include: { spots: true },
   })
 
   return res.status(201).json({ data: parking, error: null })
-})
+}))
 
-router.put('/:id', requireAdmin, async (req, res) => {
+router.put('/:id', requireAdmin, wrap(async (req, res) => {
   const { id } = req.params
   const { name, address } = req.body
   try {
@@ -74,9 +85,35 @@ router.put('/:id', requireAdmin, async (req, res) => {
     if (e.code === 'P2025') return notFound(res, 'Parking')
     throw e
   }
-})
+}))
 
-router.delete('/:id', requireAdmin, async (req, res) => {
+router.put('/:id/map', requireAdmin, wrap(async (req, res) => {
+  const { id } = req.params
+  const { cols, entranceCol, entranceRow, spots } = req.body
+
+  if (typeof cols !== 'number' || typeof entranceCol !== 'number' || typeof entranceRow !== 'number') {
+    return res.status(400).json({ data: null, error: 'cols, entranceCol et entranceRow sont requis.' })
+  }
+
+  try {
+    await prisma.$transaction([
+      prisma.parking.update({ where: { id }, data: { cols, entranceCol, entranceRow } }),
+      ...spots.map(s => prisma.spot.update({ where: { id: s.id }, data: { col: s.col, row: s.row } })),
+    ])
+
+    const parking = await prisma.parking.findUnique({
+      where: { id },
+      include: { spots: true },
+    })
+
+    return res.json({ data: parking, error: null })
+  } catch (e) {
+    if (e.code === 'P2025') return notFound(res, 'Parking')
+    throw e
+  }
+}))
+
+router.delete('/:id', requireAdmin, wrap(async (req, res) => {
   const { id } = req.params
   try {
     await prisma.parking.delete({ where: { id } })
@@ -85,6 +122,6 @@ router.delete('/:id', requireAdmin, async (req, res) => {
     if (e.code === 'P2025') return notFound(res, 'Parking')
     throw e
   }
-})
+}))
 
 export default router

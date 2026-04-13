@@ -1,10 +1,11 @@
 import { Router } from 'express'
 import prisma from '../lib/prisma.js'
 import { requireAdmin } from '../middleware/auth.js'
+import { wrap } from '../lib/asyncHandler.js'
 
 const router = Router()
 
-router.get('/parkings', requireAdmin, async (req, res) => {
+router.get('/parkings', requireAdmin, wrap(async (req, res) => {
   const parkings = await prisma.parking.findMany({
     include: {
       _count: { select: { spots: { where: { reservations: { some: { status: 'ACTIVE' } } } } } },
@@ -18,9 +19,9 @@ router.get('/parkings', requireAdmin, async (req, res) => {
   })
 
   return res.json({ data, error: null })
-})
+}))
 
-router.get('/reservations', requireAdmin, async (req, res) => {
+router.get('/reservations', requireAdmin, wrap(async (req, res) => {
   const since = new Date()
   since.setDate(since.getDate() - 29)
   since.setHours(0, 0, 0, 0)
@@ -45,6 +46,6 @@ router.get('/reservations', requireAdmin, async (req, res) => {
 
   const data = Object.entries(counts).map(([date, count]) => ({ date, count }))
   return res.json({ data, error: null })
-})
+}))
 
 export default router

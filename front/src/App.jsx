@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import Navbar from './components/Navbar'
@@ -11,7 +11,9 @@ import ReservationList from './pages/user/ReservationList'
 import ReservationDetail from './pages/user/ReservationDetail'
 import AdminParkings from './pages/admin/AdminParkings'
 import ParkingForm from './pages/admin/ParkingForm'
+import ParkingMap from './pages/admin/ParkingMap'
 import AdminStats from './pages/admin/AdminStats'
+import GuidancePage from './pages/GuidancePage'
 
 function HomeRoute() {
   const { user } = useAuth()
@@ -20,10 +22,15 @@ function HomeRoute() {
 }
 
 function AppRoutes() {
+  const location = useLocation()
+  const isGuide = location.pathname.startsWith('/guide/')
+
   return (
     <>
-      <Navbar />
+      {!isGuide && <Navbar />}
       <Routes>
+        <Route path="/guide/:token" element={<GuidancePage />} />
+
         <Route path="/" element={<HomeRoute />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -49,6 +56,9 @@ function AppRoutes() {
         } />
         <Route path="/admin/parkings/:id/edit" element={
           <ProtectedRoute allowedRoles={['ADMIN']}><ParkingForm /></ProtectedRoute>
+        } />
+        <Route path="/admin/parkings/:id/map" element={
+          <ProtectedRoute allowedRoles={['ADMIN']}><ParkingMap /></ProtectedRoute>
         } />
         <Route path="/admin/stats" element={
           <ProtectedRoute allowedRoles={['ADMIN']}><AdminStats /></ProtectedRoute>

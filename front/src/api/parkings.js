@@ -24,3 +24,8 @@ export async function deleteParking(id) {
   const res = await client.delete(`/api/parkings/${id}`)
   return res.data
 }
+
+export async function updateParkingMap(id, data) {
+  const res = await client.put(`/api/parkings/${id}/map`, data)
+  return res.data
+}

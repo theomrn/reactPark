@@ -89,6 +89,22 @@
   background: rgba(0, 160, 243, 0.2);
 }
 
+.btnMap {
+  padding: 0.35rem 0.8rem;
+  background: rgba(46, 125, 50, 0.1);
+  border: 1px solid #2E7D32;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: #2E7D32;
+  font-weight: 600;
+  transition: background 0.15s;
+}
+
+.btnMap:hover {
+  background: rgba(46, 125, 50, 0.2);
+}
+
 .btnDelete {
   padding: 0.35rem 0.8rem;
   background: var(--color-danger);

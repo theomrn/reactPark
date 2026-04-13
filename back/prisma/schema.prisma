@@ -17,17 +17,22 @@ model User {
 }
 
 model Parking {
-  id         Int     @id @default(autoincrement())
-  name       String
-  address    String
-  totalSpots Int
-  spots      Spot[]
+  id          Int     @id @default(autoincrement())
+  name        String
+  address     String
+  totalSpots  Int
+  cols        Int     @default(5)
+  entranceCol Int     @default(2)
+  entranceRow Int     @default(0)
+  spots       Spot[]
 }
 
 model Spot {
   id           Int           @id @default(autoincrement())
   number       String
   parkingId    Int
+  col          Int           @default(0)
+  row          Int           @default(0)
   parking      Parking       @relation(fields: [parkingId], references: [id], onDelete: Cascade)
   reservations Reservation[]
 }

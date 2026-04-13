@@ -76,6 +76,22 @@
   margin: 0;
 }
 
+.guideBtn {
+  display: inline-block;
+  margin-top: 0.25rem;
+  padding: 0.55rem 1.4rem;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.guideBtn:hover {
+  opacity: 0.88;
+}
+
 .error {
   color: var(--color-danger);
   font-size: 0.9rem;

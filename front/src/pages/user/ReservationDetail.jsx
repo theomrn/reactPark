@@ -57,8 +57,11 @@ export default function ReservationDetail() {
         </div>
         <div className={styles.qr}>
           <h2>QR Code d'accès</h2>
-          <QRDisplay value={reservation.qrToken} />
+          <QRDisplay value={`${window.location.origin}/guide/${reservation.qrToken}`} />
           <p className={styles.qrHint}>Présentez ce code à l'entrée du parking.</p>
+          <Link to={`/guide/${reservation.qrToken}`} className={styles.guideBtn}>
+            Voir le guidage
+          </Link>
         </div>
       </div>
     </div>
