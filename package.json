@@ -1,0 +1,11 @@
+{
+  "name": "reactpark",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix back\" \"npm run dev --prefix front\"",
+    "install:all": "npm install --prefix back && npm install --prefix front"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}

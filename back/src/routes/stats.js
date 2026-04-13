@@ -7,16 +7,12 @@ const router = Router()
 router.get('/parkings', requireAdmin, async (req, res) => {
   const parkings = await prisma.parking.findMany({
     include: {
-      spots: {
-        include: {
-          reservations: { where: { status: 'ACTIVE' } },
-        },
-      },
+      _count: { select: { spots: { where: { reservations: { some: { status: 'ACTIVE' } } } } } },
     },
   })
 
   const data = parkings.map(p => {
-    const occupied = p.spots.filter(s => s.reservations.length > 0).length
+    const occupied = p._count.spots
     const occupancyRate = p.totalSpots > 0 ? Math.round((occupied / p.totalSpots) * 100) : 0
     return { id: p.id, name: p.name, totalSpots: p.totalSpots, occupied, occupancyRate }
   })
