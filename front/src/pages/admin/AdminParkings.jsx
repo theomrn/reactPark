@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { Pencil, Map, Trash2 } from 'lucide-react'
 import { getParkings, deleteParking } from '../../api/parkings'
 import styles from './AdminParkings.module.css'
 
@@ -53,20 +54,26 @@ export default function AdminParkings() {
                   <button
                     onClick={() => navigate(`/admin/parkings/${p.id}/edit`)}
                     className={styles.btnEdit}
+                    title="Modifier"
+                    aria-label="Modifier"
                   >
-                    Modifier
+                    <Pencil size={16} />
                   </button>
                   <button
                     onClick={() => navigate(`/admin/parkings/${p.id}/map`)}
                     className={styles.btnMap}
+                    title="Carte"
+                    aria-label="Carte"
                   >
-                    Carte
+                    <Map size={16} />
                   </button>
                   <button
                     onClick={() => handleDelete(p.id)}
                     className={styles.btnDelete}
+                    title="Supprimer"
+                    aria-label="Supprimer"
                   >
-                    Supprimer
+                    <Trash2 size={16} />
                   </button>
                 </td>
               </tr>
