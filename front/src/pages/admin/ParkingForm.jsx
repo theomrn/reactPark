@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
+import { Save } from 'lucide-react'
 import { getParkingById, createParking, updateParking } from '../../api/parkings'
 import styles from './ParkingForm.module.css'
 
@@ -86,7 +87,8 @@ export default function ParkingForm() {
           )}
           <div className={styles.buttons}>
             <button type="submit" className={styles.btn}>
-              {isEdit ? 'Enregistrer les modifications' : 'Créer le parking'}
+              <Save size={15} />
+              {isEdit ? 'Enregistrer' : 'Créer le parking'}
             </button>
             <Link to="/admin/parkings" className={styles.btnCancel}>Annuler</Link>
           </div>

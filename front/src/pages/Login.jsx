@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { AlertCircle } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { login } from '../api/auth'
 import styles from './Login.module.css'
@@ -28,7 +29,12 @@ export default function Login() {
     <div className={styles.page}>
       <div className={styles.card}>
         <h1>Connexion</h1>
-        {error && <p className={styles.error}>{error}</p>}
+        {error && (
+          <div className={styles.errorBanner}>
+            <AlertCircle size={16} />
+            <span>{error}</span>
+          </div>
+        )}
         <form onSubmit={handleSubmit} className={styles.form}>
           <label>
             Email
