@@ -13,16 +13,21 @@
 }
 
 .back {
-  color: var(--color-success);
+  display: inline-block;
+  padding: 0.45rem 1rem;
+  background: var(--color-primary);
+  color: #fff;
   text-decoration: none;
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 700;
   white-space: nowrap;
-  transition: opacity 0.15s;
+  border-radius: 6px;
+  transition: background 0.15s, transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .back:hover {
-  opacity: 0.7;
+  background: var(--color-primary-hover);
+  transform: scale(1.05);
 }
 
 .title {
