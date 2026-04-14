@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-  padding: 0.85rem 2rem;
+  padding: 0.85rem 8rem;
   background: rgba(247, 245, 240, 0.72);
   backdrop-filter: saturate(160%) blur(14px);
   -webkit-backdrop-filter: saturate(160%) blur(14px);
@@ -24,13 +24,14 @@
   gap: 0.55rem;
 }
 
-.brand::before {
-  content: '';
-  width: 14px;
-  height: 14px;
-  border-radius: 4px;
-  background: linear-gradient(135deg, var(--color-accent) 0%, #3BD4B8 55%, var(--color-secondary) 100%);
-  box-shadow: 0 2px 6px rgba(0, 224, 184, 0.4);
+.logo {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  display: block;
+  border-radius: 15%;
+  padding: 1px;
+  box-shadow: 0 4px 12px -3px rgba(11, 31, 58, 0.35);
 }
 
 .links {

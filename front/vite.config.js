@@ -16,8 +16,8 @@ export default defineConfig({
       includeAssets: ['apple-touch-icon-180.png'],
       devOptions: { enabled: true },
       manifest: {
-        name: 'ParkWise',
-        short_name: 'ParkWise',
+        name: 'SmartPark',
+        short_name: 'SmartPark',
         description: 'Réservation et guidage de parking intelligent',
         theme_color: '#2E7D32',
         background_color: '#ffffff',

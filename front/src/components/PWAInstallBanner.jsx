@@ -9,9 +9,11 @@ export default function PWAInstallBanner() {
   return (
     <div className={styles.banner}>
       <div className={styles.content}>
-        <span className={styles.icon}>P</span>
+        <span className={styles.icon}>
+          <img src="/logo-bg.png" alt="" className={styles.iconImg} />
+        </span>
         <div className={styles.text}>
-          <strong>Installer ParkWise</strong>
+          <strong>Téléchargez SmartPark</strong>
           {canInstall
             ? <span>Accédez à vos réservations et au guidage hors-ligne.</span>
             : <span>Menu <b>⋮</b> → <b>Ajouter à l'écran d'accueil</b></span>
