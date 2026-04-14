@@ -14,6 +14,7 @@ import ParkingForm from './pages/admin/ParkingForm'
 import ParkingMap from './pages/admin/ParkingMap'
 import AdminStats from './pages/admin/AdminStats'
 import GuidancePage from './pages/GuidancePage'
+import PWAInstallBanner from './components/PWAInstallBanner'
 
 function HomeRoute() {
   const { user } = useAuth()
@@ -28,6 +29,7 @@ function AppRoutes() {
   return (
     <>
       {!isGuide && <Navbar />}
+      <PWAInstallBanner />
       <Routes>
         <Route path="/guide/:token" element={<GuidancePage />} />
 

@@ -31,4 +31,12 @@ pnpm-debug.log*
 
 # Vite
 front/*.local
+
+# PWA generated icons (rebuild with node scripts/generate-icons.mjs)
+front/public/pwa-64.png
+front/public/pwa-192.png
+front/public/pwa-512.png
+front/public/maskable-icon-512.png
+front/public/apple-touch-icon-180.png
+
 CLAUDE.md
