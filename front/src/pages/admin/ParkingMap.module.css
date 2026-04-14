@@ -182,14 +182,14 @@
   font-weight: 700;
   font-size: 0.75rem;
   margin: 0 0 0.5rem;
-  color: var(--color-muted);
+  color: #fff;
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
 
 .panelSubtitle {
   font-size: 0.75rem;
-  color: var(--color-muted);
+  color: #fff;
   margin: 0.75rem 0 0.4rem;
 }
 
