@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
-import Navbar from './components/Navbar'
+import Navbar from './components/Navbar/Navbar'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -14,7 +14,7 @@ import ParkingForm from './pages/admin/ParkingForm'
 import ParkingMap from './pages/admin/ParkingMap'
 import AdminStats from './pages/admin/AdminStats'
 import GuidancePage from './pages/GuidancePage'
-import PWAInstallBanner from './components/PWAInstallBanner'
+import PWAInstallBanner from './components/PWAInstallBanner/PWAInstallBanner'
 
 function HomeRoute() {
   return <Home />

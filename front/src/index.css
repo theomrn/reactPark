@@ -6,35 +6,35 @@
 
 :root {
   /* Surfaces */
-  --color-bg: #F3F1EC;
-  --color-bg-elevated: #FAF8F3;
+  --color-bg: #F9F6EF;
+  --color-bg-elevated: #FDFBF7;
   --color-surface: #FFFFFF;
-  --color-surface-soft: #F7F5F0;
+  --color-surface-soft: #F0EDE6;
 
-  /* Brand — deep slate primary + electric teal accent */
-  --color-primary: #0B1F3A;
-  --color-primary-hover: #132C52;
-  --color-secondary: #2E6EA8;
-  --color-secondary-hover: #255A8A;
-  --color-dark: #061328;
+  /* Brand — deep navy primary + sky blue secondary */
+  --color-primary: #0A0A2E;
+  --color-primary-hover: #12124A;
+  --color-secondary: #00A0F3;
+  --color-secondary-hover: #0088D1;
+  --color-dark: #05051A;
 
-  --color-accent: #00E0B8;
-  --color-accent-hover: #00C6A1;
-  --color-accent-soft: rgba(0, 224, 184, 0.14);
+  --color-accent: #FF9E42;
+  --color-accent-hover: #E8872A;
+  --color-accent-soft: rgba(255, 158, 66, 0.14);
 
   /* Text */
-  --color-text: #0B1F3A;
-  --color-text-soft: #2A3854;
-  --color-muted: #6B7389;
-  --color-border: #E4E0D6;
-  --color-border-strong: #D2CDBF;
-  --color-heading-on-bg: #0B1F3A;
+  --color-text: #0A0A2E;
+  --color-text-soft: #1A1A4A;
+  --color-muted: #5A6080;
+  --color-border: #D8D4C8;
+  --color-border-strong: #B8B4A8;
+  --color-heading-on-bg: #0A0A2E;
 
   /* Status */
   --color-danger: #E03E4E;
   --color-danger-hover: #C0303F;
   --color-success: #0EA26A;
-  --color-warning: #F0A63A;
+  --color-warning: #FF9E42;
 
   /* Shape */
   --radius-sm: 8px;
@@ -43,10 +43,10 @@
   --radius-pill: 999px;
 
   /* Layered shadows */
-  --shadow-sm: 0 1px 2px rgba(11, 31, 58, 0.04), 0 2px 6px rgba(11, 31, 58, 0.06);
-  --shadow-md: 0 2px 6px rgba(11, 31, 58, 0.05), 0 10px 24px -8px rgba(11, 31, 58, 0.14);
-  --shadow-lg: 0 4px 12px rgba(11, 31, 58, 0.06), 0 24px 48px -12px rgba(11, 31, 58, 0.22);
-  --shadow-accent: 0 10px 28px -8px rgba(0, 224, 184, 0.55);
+  --shadow-sm: 0 1px 2px rgba(10, 10, 46, 0.04), 0 2px 6px rgba(10, 10, 46, 0.06);
+  --shadow-md: 0 2px 6px rgba(10, 10, 46, 0.05), 0 10px 24px -8px rgba(10, 10, 46, 0.14);
+  --shadow-lg: 0 4px 12px rgba(10, 10, 46, 0.06), 0 24px 48px -12px rgba(10, 10, 46, 0.22);
+  --shadow-accent: 0 10px 28px -8px rgba(255, 158, 66, 0.50);
 
   /* Motion */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);

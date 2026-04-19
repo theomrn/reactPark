@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Pencil, Map, Trash2 } from 'lucide-react'
 import { getParkings, deleteParking } from '../../api/parkings'
-import ConfirmModal from '../../components/ConfirmModal'
+import ConfirmModal from '../../components/ConfirmModal/ConfirmModal'
 import styles from './AdminParkings.module.css'
 
 export default function AdminParkings() {

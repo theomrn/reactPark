@@ -1,4 +1,4 @@
-import { usePWAInstall } from '../hooks/usePWAInstall'
+import { usePWAInstall } from '../../hooks/usePWAInstall'
 import styles from './PWAInstallBanner.module.css'
 
 export default function PWAInstallBanner() {
