@@ -46,6 +46,6 @@ model Reservation {
   qrToken   String   @unique
   status    String   @default("ACTIVE")
   createdAt DateTime @default(now())
-  spot      Spot     @relation(fields: [spotId], references: [id])
+  spot      Spot     @relation(fields: [spotId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id])
 }
