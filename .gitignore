@@ -14,6 +14,10 @@ back/prisma/dev.db
 back/prisma/dev.db-journal
 back/prisma/*.db-shm
 back/prisma/*.db-wal
+back/prisma/test.db
+back/prisma/test.db-journal
+back/prisma/test.db-shm
+back/prisma/test.db-wal
 
 # Logs
 *.log
@@ -38,5 +42,19 @@ front/public/pwa-192.png
 front/public/pwa-512.png
 front/public/maskable-icon-512.png
 front/public/apple-touch-icon-180.png
+
+# Tests — coverage
+back/coverage/
+front/coverage/
+
+# Tests — Playwright
+playwright-report/
+test-results/
+e2e/playwright-report/
+e2e/test-results/
+e2e/.auth/
+
+# Prisma generated client (reproductible via prisma generate)
+back/node_modules/.prisma/
 
 CLAUDE.md
