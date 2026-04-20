@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { getParkingById } from '../../api/parkings'
 import { createReservation } from '../../api/reservations'
+import DateTimePicker from '../../components/DateTimePicker/DateTimePicker'
 import styles from './ParkingDetail.module.css'
 
 const PRESETS = [
@@ -155,29 +156,22 @@ export default function ParkingDetail() {
             </div>
 
             <div className={styles.dates}>
-              <div className={styles.dateField}>
-                <label htmlFor="start">Arrivée</label>
-                <input
-                  id="start"
-                  type="datetime-local"
-                  value={startDate}
-                  min={toLocalDatetimeValue(new Date())}
-                  onChange={e => handleStartChange(e.target.value)}
-                  required
-                />
-              </div>
+              <DateTimePicker
+                id="start"
+                label="Arrivée"
+                value={startDate}
+                onChange={handleStartChange}
+                min={toLocalDatetimeValue(new Date())}
+              />
               <div className={styles.dateArrow}>→</div>
-              <div className={styles.dateField}>
-                <label htmlFor="end">Départ</label>
-                <input
-                  id="end"
-                  type="datetime-local"
-                  value={endDate}
-                  min={startDate || toLocalDatetimeValue(new Date())}
-                  onChange={e => handleEndChange(e.target.value)}
-                  required
-                />
-              </div>
+              <DateTimePicker
+                id="end"
+                label="Départ"
+                value={endDate}
+                onChange={handleEndChange}
+                min={startDate || toLocalDatetimeValue(new Date())}
+                alignRight
+              />
             </div>
 
             {dateError && <p className={styles.fieldError}>{dateError}</p>}
