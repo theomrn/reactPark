@@ -53,8 +53,9 @@ test.describe('Réservations — parcours utilisateur', () => {
     // Preset 1h
     await page.getByRole('button', { name: '1h' }).click()
 
-    // Sélectionner la première place (numéros purement numériques, ex : "1", "2")
-    const firstSpot = page.getByRole('button', { name: /^\d+$/ }).first()
+    // Sélectionner la première place disponible (non désactivée)
+    const firstSpot = page.getByRole('button', { name: /^\d+$/, disabled: false }).first()
+    await expect(firstSpot).toBeVisible({ timeout: 5_000 })
     await firstSpot.click()
 
     // Soumettre
