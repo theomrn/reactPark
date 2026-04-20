@@ -10,6 +10,23 @@ vi.mock('../api/reservations', () => ({
   createReservation: vi.fn(),
 }))
 
+// Remplace DateTimePicker par un input datetime-local classique
+// pour tester la logique de ParkingDetail indépendamment du widget
+vi.mock('../components/DateTimePicker/DateTimePicker', () => ({
+  default: ({ value, onChange, label, id, min }) => (
+    <div>
+      <label htmlFor={id}>{label}</label>
+      <input
+        id={id}
+        type="datetime-local"
+        value={value ?? ''}
+        min={min}
+        onChange={e => onChange(e.target.value)}
+      />
+    </div>
+  ),
+}))
+
 const { getParkingById } = await import('../api/parkings')
 const { createReservation } = await import('../api/reservations')
 
