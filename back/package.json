@@ -5,7 +5,10 @@
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
-    "migrate": "prisma migrate dev"
+    "migrate": "prisma migrate dev",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
@@ -17,6 +20,9 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.7",
-    "prisma": "^5.22.0"
+    "prisma": "^5.22.0",
+    "vitest": "^2.1.0",
+    "@vitest/coverage-v8": "^2.1.0",
+    "supertest": "^7.0.0"
   }
 }
