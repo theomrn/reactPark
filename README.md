@@ -1,29 +1,289 @@
 # ParkWise
 
-Supervision de parking intelligent — Projet transversal WEB ISEN AP4.
+Système de supervision de parking intelligent — Projet transversal WEB ISEN AP4.
 
-**Stack** : React + Vite (front) · Node.js / Express (back) · SQLite / Prisma · Socket.io
+Réservez une place, suivez la disponibilité en direct et laissez-vous guider jusqu'à votre emplacement via un QR code.
+
+---
+
+## Sommaire
+
+- [Fonctionnalités](#fonctionnalités)
+- [Stack technique](#stack-technique)
+- [Prérequis](#prérequis)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Lancer le projet](#lancer-le-projet)
+- [Structure du projet](#structure-du-projet)
+- [Rôles utilisateurs](#rôles-utilisateurs)
+- [Routes API](#routes-api)
+- [Tests](#tests)
+
+---
+
+## Fonctionnalités
+
+**Utilisateur**
+- Inscription / connexion avec JWT
+- Consultation des parkings disponibles en temps réel
+- Réservation d'une place avec choix de créneau
+- QR code d'accès généré automatiquement
+- Page de guidage visuelle (plan SVG + chemin animé vers la place)
+- Annulation de réservation
+- Application installable (PWA)
+
+**Administrateur**
+- Gestion CRUD des parkings
+- Éditeur visuel de la carte des places (positionnement drag & drop)
+- Tableau de bord statistiques (taux d'occupation, réservations sur 30 jours)
+- Accès protégé par rôle
+
+---
+
+## Stack technique
+
+| Couche | Technologie |
+|--------|-------------|
+| Frontend | React 18 + Vite + CSS Modules |
+| Backend | Node.js + Express |
+| Base de données | SQLite via Prisma ORM |
+| Authentification | JWT (jsonwebtoken) |
+| PWA | vite-plugin-pwa + Workbox |
+| Tests unitaires | Vitest + Supertest + Testing Library |
+| Tests E2E | Playwright |
+
+---
+
+## Prérequis
+
+- **Node.js** >= 18
+- **npm** >= 9
+- Git
+
+Vérifier les versions :
+
+```bash
+node -v
+npm -v
+```
+
+---
+
+## Installation
+
+### 1. Cloner le dépôt
+
+```bash
+git clone git@github.com:theomrn/reactPark.git
+cd reactPark
+```
+
+### 2. Installer les dépendances
+
+```bash
+npm run install:all
+```
+
+Cela installe les dépendances du backend et du frontend en une commande.
+
+### 3. Configurer l'environnement
+
+Créer le fichier `.env` du backend :
+
+```bash
+cp back/.env.example back/.env   # si le fichier existe
+# ou créer manuellement :
+```
+
+```env
+# back/.env
+DATABASE_URL="file:./dev.db"
+JWT_SECRET="votre_secret_jwt_ici"
+PORT=3002
+```
+
+> **Important** : remplacer `votre_secret_jwt_ici` par une chaîne aléatoire longue en production.
+
+### 4. Initialiser la base de données
+
+```bash
+cd back
+npx prisma migrate dev
+cd ..
+```
+
+Cela crée le fichier SQLite et applique toutes les migrations.
+
+### 5. (Optionnel) Créer un compte administrateur
+
+Après avoir démarré le backend, enregistrez un compte via l'API puis passez son rôle en `ADMIN` directement en base :
+
+```bash
+cd back
+npx prisma studio
+```
+
+Dans l'interface Prisma Studio, modifiez le champ `role` de l'utilisateur souhaité : `USER` → `ADMIN`.
+
+---
+
+## Configuration
+
+### Variables d'environnement — Backend (`back/.env`)
+
+| Variable | Description | Exemple |
+|----------|-------------|---------|
+| `DATABASE_URL` | Chemin vers le fichier SQLite | `file:./dev.db` |
+| `JWT_SECRET` | Clé secrète pour signer les tokens | `mon_secret_32_chars` |
+| `PORT` | Port du serveur Express | `3002` |
+
+### Proxy frontend
+
+Le frontend Vite est configuré pour proxifier `/api` vers `http://localhost:3002` en développement (`front/vite.config.js`). Aucune configuration supplémentaire n'est nécessaire.
 
 ---
 
 ## Lancer le projet
 
+### Développement (front + back simultanément)
+
 ```bash
-npm run install:all   # installe les dépendances front + back
-npm run dev           # démarre front (port 5173) et back (port 3002) en parallèle
+npm run dev
 ```
 
-Initialiser la base de données :
+| Service | URL |
+|---------|-----|
+| Frontend | http://localhost:5173 |
+| Backend API | http://localhost:3002 |
+
+### Séparément
 
 ```bash
-cd back && npx prisma migrate dev
+# Backend uniquement
+cd back && npm run dev
+
+# Frontend uniquement
+cd front && npm run dev
+```
+
+### Production
+
+```bash
+# Build du frontend
+cd front && npm run build
+
+# Démarrer le backend
+cd back && npm start
 ```
 
 ---
 
-## Tests
+## Structure du projet
 
-Le projet dispose de trois niveaux de tests : unitaires backend, unitaires frontend, et end-to-end.
+```
+reactPark/
+├── back/                        # API REST Express
+│   ├── prisma/
+│   │   ├── schema.prisma        # Schéma de la base de données
+│   │   └── migrations/          # Historique des migrations
+│   ├── src/
+│   │   ├── app.js               # Application Express (sans listen)
+│   │   ├── index.js             # Point d'entrée (listen)
+│   │   ├── routes/
+│   │   │   ├── auth.js          # POST /api/auth/register|login
+│   │   │   ├── parkings.js      # CRUD /api/parkings
+│   │   │   ├── reservations.js  # CRUD /api/reservations
+│   │   │   ├── guide.js         # GET /api/guide/:token
+│   │   │   └── stats.js         # GET /api/stats (admin)
+│   │   ├── middleware/
+│   │   │   └── auth.js          # requireAuth, requireAdmin
+│   │   └── lib/
+│   │       ├── prisma.js        # Instance Prisma Client
+│   │       └── asyncHandler.js  # Wrapper async pour Express
+│   └── src/__tests__/           # Tests unitaires backend
+│
+├── front/                       # Application React
+│   ├── public/                  # Assets statiques + icônes PWA
+│   └── src/
+│       ├── api/                 # Appels HTTP (axios)
+│       ├── components/          # Composants réutilisables
+│       │   ├── Navbar/
+│       │   ├── ConfirmModal/
+│       │   └── PWAInstallBanner/
+│       ├── context/
+│       │   └── AuthContext.jsx  # Contexte auth (user, login, logout)
+│       ├── pages/
+│       │   ├── Home.jsx
+│       │   ├── Login.jsx
+│       │   ├── Register.jsx
+│       │   ├── GuidancePage.jsx # Plan visuel SVG + guidage
+│       │   ├── user/            # Pages espace utilisateur
+│       │   └── admin/           # Pages backoffice admin
+│       ├── constants/
+│       └── hooks/
+│
+├── e2e/                         # Tests end-to-end Playwright
+│   ├── playwright.config.js
+│   ├── fixtures/
+│   └── tests/
+│
+├── package.json                 # Scripts racine (dev, test)
+└── README.md
+```
+
+---
+
+## Rôles utilisateurs
+
+| Rôle | Accès |
+|------|-------|
+| **USER** | Parcourir les parkings, réserver, voir ses réservations, utiliser le guidage |
+| **ADMIN** | Tout le backoffice : gestion parkings, carte visuelle, statistiques |
+
+Le rôle par défaut à l'inscription est `USER`. Seul un accès direct à la base (Prisma Studio) permet de promouvoir un compte en `ADMIN`.
+
+---
+
+## Routes API
+
+### Authentification
+
+| Méthode | Route | Auth | Description |
+|---------|-------|------|-------------|
+| `POST` | `/api/auth/register` | — | Créer un compte |
+| `POST` | `/api/auth/login` | — | Se connecter |
+
+### Parkings
+
+| Méthode | Route | Auth | Description |
+|---------|-------|------|-------------|
+| `GET` | `/api/parkings` | — | Liste des parkings avec disponibilités |
+| `GET` | `/api/parkings/:id` | — | Détail d'un parking + places |
+| `POST` | `/api/parkings` | Admin | Créer un parking |
+| `PUT` | `/api/parkings/:id` | Admin | Modifier nom / adresse |
+| `PUT` | `/api/parkings/:id/map` | Admin | Mettre à jour la carte des places |
+| `DELETE` | `/api/parkings/:id` | Admin | Supprimer un parking |
+
+### Réservations
+
+| Méthode | Route | Auth | Description |
+|---------|-------|------|-------------|
+| `GET` | `/api/reservations/mine` | User | Mes réservations |
+| `GET` | `/api/reservations/:id` | User | Détail d'une réservation |
+| `POST` | `/api/reservations` | User | Créer une réservation |
+| `DELETE` | `/api/reservations/:id` | User | Annuler une réservation |
+
+### Guidage & Stats
+
+| Méthode | Route | Auth | Description |
+|---------|-------|------|-------------|
+| `GET` | `/api/guide/:token` | — | Données de guidage via QR token |
+| `GET` | `/api/stats/parkings` | Admin | Taux d'occupation par parking |
+| `GET` | `/api/stats/reservations` | Admin | Réservations sur 30 jours |
+
+---
+
+## Tests
 
 ### Vue d'ensemble
 
@@ -39,13 +299,13 @@ Le projet dispose de trois niveaux de tests : unitaires backend, unitaires front
 # Unitaires back + front en parallèle
 npm run test:unit
 
-# Unitaires back uniquement
+# Unitaires backend uniquement
 npm run test:unit:back
 
-# Unitaires front uniquement
+# Unitaires frontend uniquement
 npm run test:unit:front
 
-# E2E (lance automatiquement les serveurs)
+# E2E (démarre automatiquement les serveurs)
 npm run test:e2e
 
 # Tout (unitaires + E2E)
@@ -56,194 +316,35 @@ cd back  && npm run test:coverage
 cd front && npm run test:coverage
 ```
 
----
+### Tests unitaires — Backend (`back/src/__tests__/`)
 
-### Tests unitaires — Backend
+Prisma et bcrypt sont mockés — aucune base de données n'est utilisée.
 
-**Localisation** : `back/src/__tests__/`
+| Fichier | Cas testés |
+|---------|-----------|
+| `middleware.test.js` | `requireAuth` (5 cas) + `requireAdmin` (2 cas) |
+| `auth.test.js` | `POST /register` (4 cas) + `POST /login` (4 cas) |
+| `reservations.test.js` | GET mine/id, POST, DELETE — 16 cas |
 
-**Principe** : Prisma et bcrypt sont mockés (`vi.mock`), aucune base de données réelle n'est utilisée. Les tests sont rapides et entièrement isolés.
+### Tests unitaires — Frontend (`front/src/__tests__/`)
 
-#### `middleware.test.js` — 7 tests
+Les modules API sont mockés. Composants rendus avec `MemoryRouter`.
 
-Teste `requireAuth` et `requireAdmin` directement, sans passer par HTTP.
+| Fichier | Cas testés |
+|---------|-----------|
+| `AuthContext.test.jsx` | login, logout, persistance localStorage |
+| `Navbar.test.jsx` | affichage selon rôle USER / ADMIN / non connecté |
+| `ParkingDetail.test.jsx` | presets durée, badge, sélection place, validation |
+| `ReservationDetail.test.jsx` | affichage données, liens, QR, erreur API |
 
-| Test | Description |
-|------|-------------|
-| `requireAuth` | 401 si pas de header Authorization |
-| `requireAuth` | 401 si header n'est pas `Bearer ...` |
-| `requireAuth` | 401 si token invalide |
-| `requireAuth` | 401 si token expiré |
-| `requireAuth` | Injecte `req.user` et appelle `next()` si token valide |
-| `requireAdmin` | 403 si `role === 'USER'` |
-| `requireAdmin` | Appelle `next()` si `role === 'ADMIN'` |
+### Tests E2E — Playwright (`e2e/tests/`)
 
-#### `auth.test.js` — 8 tests
+Les serveurs sont démarrés automatiquement avant les tests.
 
-Teste `POST /api/auth/register` et `POST /api/auth/login` via Supertest.
+> Pour les tests admin (`admin.spec.js`), un compte `admin@parkwise.fr` / `Admin1234!` doit exister en base.
 
-| Endpoint | Test | Résultat attendu |
-|----------|------|-----------------|
-| `POST /register` | Email + password valides | 201 + token JWT |
-| `POST /register` | Email manquant | 400 |
-| `POST /register` | Password manquant | 400 |
-| `POST /register` | Email déjà utilisé | 400 |
-| `POST /login` | Credentials valides | 200 + token JWT |
-| `POST /login` | Email inconnu | 401 |
-| `POST /login` | Mauvais mot de passe | 401 |
-| `POST /login` | Champs manquants | 400 |
-
-#### `reservations.test.js` — 16 tests
-
-Teste les 4 endpoints de réservation avec des tokens JWT générés pour le test.
-
-| Endpoint | Test | Résultat attendu |
-|----------|------|-----------------|
-| `GET /mine` | Sans token | 401 |
-| `GET /mine` | Avec token valide | 200 + liste |
-| `GET /:id` | Réservation de l'utilisateur | 200 |
-| `GET /:id` | Réservation d'un autre utilisateur | 404 |
-| `GET /:id` | Réservation inexistante | 404 |
-| `GET /:id` | ID non numérique | 400 |
-| `POST /` | Créneau libre | 201 + qrToken |
-| `POST /` | Créneau en conflit | 400 |
-| `POST /` | Fin ≤ début | 400 |
-| `POST /` | spotId manquant | 400 |
-| `POST /` | Place inexistante | 400 |
-| `POST /` | Sans token | 401 |
-| `DELETE /:id` | Propriétaire, statut ACTIVE | 200 |
-| `DELETE /:id` | Pas le propriétaire | 403 |
-| `DELETE /:id` | Statut ≠ ACTIVE | 400 |
-| `DELETE /:id` | Réservation inexistante | 404 |
-
----
-
-### Tests unitaires — Frontend
-
-**Localisation** : `front/src/__tests__/`
-
-**Principe** : les modules API (`src/api/`) sont mockés via `vi.mock`. Les composants sont rendus avec `@testing-library/react` dans un environnement jsdom. React Router est fourni via `MemoryRouter`.
-
-#### `AuthContext.test.jsx` — 4 tests
-
-| Test |
-|------|
-| `user` est `null` par défaut |
-| `login()` met à jour l'état et persiste dans `localStorage` |
-| `logout()` remet `user` à `null` et vide `localStorage` |
-| Restaure l'utilisateur depuis `localStorage` au montage |
-
-#### `Navbar.test.jsx` — 9 tests
-
-| Contexte | Test |
-|----------|------|
-| Non connecté | Affiche "Se connecter" |
-| Non connecté | N'affiche pas "Déconnexion" |
-| Role USER | Affiche "Parkings" et "Mes réservations" |
-| Role USER | N'affiche pas les liens admin |
-| Role USER | Affiche "Déconnexion" |
-| Role ADMIN | Affiche "Gestion parkings" et "Statistiques" |
-| Role ADMIN | N'affiche pas les liens USER |
-| Role ADMIN | Appelle `logout()` au clic sur "Déconnexion" |
-
-#### `ParkingDetail.test.jsx` — 9 tests
-
-Teste la page de réservation d'une place (`/user/parkings/:id`).
-
-| Test |
-|------|
-| Affiche le nom et l'adresse du parking |
-| Affiche les places disponibles |
-| Preset "1h" → `endDate = startDate + 1h` |
-| Preset "Journée" → `endDate = startDate + 8h` |
-| Le badge de durée s'affiche dynamiquement |
-| Le bouton submit est désactivé sans place sélectionnée |
-| Le bouton submit s'active après sélection d'une place |
-| Affiche une erreur si `fin ≤ début` |
-| Appelle `createReservation` avec `spotId`, `startDate`, `endDate` |
-
-#### `ReservationDetail.test.jsx` — 6 tests
-
-Teste la page de détail d'une réservation (`/user/reservations/:id`).
-
-| Test |
-|------|
-| Affiche les données (parking, place, dates) |
-| Affiche le statut "Active" pour le statut `ACTIVE` |
-| Lien "← Mes réservations" pointe vers `/user/reservations` |
-| Bouton "Voir le guidage" pointe vers `/guide/:qrToken` |
-| Affiche le QR code avec la bonne valeur |
-| Affiche un message d'erreur si l'API échoue |
-
----
-
-### Tests E2E — Playwright
-
-**Localisation** : `e2e/tests/`  
-**Config** : `e2e/playwright.config.js`
-
-Les serveurs front et back sont démarrés automatiquement par Playwright avant chaque session de test. Les tests s'exécutent sur Chromium en mode headless.
-
-> **Prérequis** : un compte admin `admin@parkwise.fr` / `Admin1234!` doit exister en base pour les tests admin.
-
-#### `auth.spec.js`
-
-| Parcours |
-|----------|
-| Inscription → redirigé vers `/user/parkings` |
-| Inscription avec email déjà utilisé → message d'erreur |
-| Login valide → navbar affiche "Déconnexion" |
-| Login avec mauvais mot de passe → message d'erreur |
-| Logout → retour sur `/login` |
-
-#### `reservations.spec.js`
-
-| Parcours |
-|----------|
-| Accéder à la liste des parkings |
-| Sélectionner un parking → voir ses places |
-| Créer une réservation → voir le détail avec QR code |
-| Voir la liste de mes réservations |
-
-#### `admin.spec.js`
-
-| Parcours |
-|----------|
-| Un USER ne peut pas accéder à `/admin/parkings` |
-| Un visiteur non connecté est redirigé vers `/login` |
-| Voir la liste des parkings (admin) |
-| Créer un parking → apparaît dans la liste |
-| Modifier un parking → nom mis à jour |
-
----
-
-### Structure des fichiers de tests
-
-```
-reactPark/
-├── back/
-│   ├── src/
-│   │   └── __tests__/
-│   │       ├── setup.js              # Variables d'env de test (JWT_SECRET)
-│   │       ├── middleware.test.js
-│   │       ├── auth.test.js
-│   │       └── reservations.test.js
-│   └── vitest.config.js
-├── front/
-│   ├── src/
-│   │   └── __tests__/
-│   │       ├── AuthContext.test.jsx
-│   │       ├── Navbar.test.jsx
-│   │       ├── ParkingDetail.test.jsx
-│   │       └── ReservationDetail.test.jsx
-│   ├── vitest.config.js
-│   └── vitest.setup.js               # jest-dom + mock localStorage
-└── e2e/
-    ├── playwright.config.js
-    ├── fixtures/
-    │   └── auth.js                   # Helper login + email unique
-    └── tests/
-        ├── auth.spec.js
-        ├── reservations.spec.js
-        └── admin.spec.js
-```
+| Fichier | Parcours couverts |
+|---------|------------------|
+| `auth.spec.js` | Inscription, login valide/invalide, logout |
+| `reservations.spec.js` | Parcours complet réservation + consultation liste |
+| `admin.spec.js` | Accès protégé, création et modification de parking |
