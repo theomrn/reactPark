@@ -1,0 +1,459 @@
+/* ==================== KEYFRAMES ==================== */
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes drift {
+  0%,  100% { transform: translate(0, 0) scale(1); }
+  33%        { transform: translate(28px, -18px) scale(1.06); }
+  66%        { transform: translate(-18px, 14px) scale(0.96); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pathDraw {
+  from { stroke-dashoffset: 2000; }
+  to   { stroke-dashoffset: 0; }
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(1.4); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ==================== PAGE ==================== */
+
+.page {
+  min-height: 100vh;
+  background: var(--color-bg, #F9F6EF);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 36px 16px 56px;
+  font-family: var(--font-body, 'Manrope', system-ui, sans-serif);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative background orbs */
+.orb1,
+.orb2 {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.orb1 {
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(0, 160, 243, 0.09) 0%, transparent 70%);
+  top: -120px;
+  right: -80px;
+  animation: drift 20s ease-in-out infinite;
+}
+
+.orb2 {
+  width: 340px;
+  height: 340px;
+  background: radial-gradient(circle, rgba(14, 162, 106, 0.08) 0%, transparent 70%);
+  bottom: -80px;
+  left: -60px;
+  animation: drift 26s ease-in-out infinite reverse;
+}
+
+/* ==================== HEADER ==================== */
+
+.header {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-bottom: 28px;
+  animation: fadeUp 0.55s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)) both;
+}
+
+.parkingName {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-muted, #5A6080);
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  margin: 0 0 10px;
+}
+
+.placeRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.placeLabel {
+  font-family: var(--font-display, 'Space Grotesk', system-ui, sans-serif);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--color-text-soft, #1A1A4A);
+}
+
+.placeNumber {
+  font-family: var(--font-display, 'Space Grotesk', system-ui, sans-serif);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1;
+  background: linear-gradient(135deg, #00A0F3 0%, #0A0A2E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.badges {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  animation: slideDown 0.5s 0.15s var(--ease-out) both;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #D8D4C8);
+  border-radius: var(--radius-pill, 999px);
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-soft, #1A1A4A);
+  box-shadow: var(--shadow-sm);
+}
+
+.badgeLive {
+  border-color: rgba(14, 162, 106, 0.3);
+  color: #0A7A52;
+  background: rgba(14, 162, 106, 0.06);
+}
+
+.liveDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #0EA26A;
+  display: inline-block;
+  flex-shrink: 0;
+  animation: pulseDot 1.4s ease-in-out infinite;
+}
+
+/* ==================== MAP CARD ==================== */
+
+.mapCard {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 700px;
+  background: var(--color-surface, #fff);
+  border-radius: var(--radius-lg, 20px);
+  border: 1px solid var(--color-border, #D8D4C8);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  animation: fadeUp 0.55s 0.1s var(--ease-out) both;
+}
+
+.mapCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-muted, #5A6080);
+  border-bottom: 1px solid var(--color-border, #D8D4C8);
+  background: var(--color-surface-soft, #F0EDE6);
+}
+
+.mapScroll {
+  width: 100%;
+  overflow-x: auto;
+  padding: 6px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Path draw animation */
+.pathHidden {
+  stroke-dasharray: 14 8;
+  stroke-dashoffset: 2000;
+  opacity: 0;
+}
+
+.pathAnimated {
+  stroke-dasharray: 14 8;
+  animation: pathDraw 2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both;
+}
+
+/* ==================== LEGEND ==================== */
+
+.legend {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 8px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+  justify-content: center;
+  animation: fadeUp 0.55s 0.25s var(--ease-out) both;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-soft, #1A1A4A);
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #D8D4C8);
+  border-radius: var(--radius-pill, 999px);
+  padding: 7px 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.dotGreen {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  background: #0EA26A;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.dotOrange {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  background: #FF9E42;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.lineBlue {
+  width: 22px;
+  height: 0;
+  border-top: 3.5px dashed #00A0F3;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* ==================== INFO CARD ==================== */
+
+.infoCard {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 700px;
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #D8D4C8);
+  border-radius: var(--radius-lg, 20px);
+  box-shadow: var(--shadow-md);
+  padding: 20px 24px;
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  animation: fadeUp 0.55s 0.35s var(--ease-out) both;
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+}
+
+.infoDivider {
+  width: 1px;
+  height: 44px;
+  background: var(--color-border, #D8D4C8);
+  margin: 0 22px;
+  flex-shrink: 0;
+}
+
+.infoIconWrap {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm, 8px);
+  background: rgba(0, 160, 243, 0.08);
+  border: 1px solid rgba(0, 160, 243, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-secondary, #00A0F3);
+  flex-shrink: 0;
+}
+
+.infoLabel {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-muted, #5A6080);
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+  margin: 0 0 3px;
+}
+
+.infoValue {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text, #0A0A2E);
+  margin: 0;
+  font-family: var(--font-display, 'Space Grotesk', system-ui, sans-serif);
+}
+
+/* ==================== LOADING ==================== */
+
+.loadingWrap {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding-top: 120px;
+  animation: fadeIn 0.4s var(--ease-out) both;
+}
+
+.spinner {
+  width: 46px;
+  height: 46px;
+  border: 3px solid var(--color-border, #D8D4C8);
+  border-top-color: var(--color-secondary, #00A0F3);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+.loadingText {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-muted, #5A6080);
+  margin: 0;
+}
+
+/* ==================== ERROR ==================== */
+
+.errorCard {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 52px 36px;
+  text-align: center;
+  background: var(--color-surface, #fff);
+  border: 1px solid rgba(224, 62, 78, 0.2);
+  border-radius: var(--radius-lg, 20px);
+  max-width: 380px;
+  margin-top: 100px;
+  box-shadow: var(--shadow-md);
+  animation: fadeUp 0.5s var(--ease-out) both;
+}
+
+.errorIcon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #E03E4E 0%, #C0303F 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px -4px rgba(224, 62, 78, 0.40);
+}
+
+.errorTitle {
+  font-family: var(--font-display, 'Space Grotesk', system-ui, sans-serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text, #0A0A2E);
+  margin: 0;
+}
+
+.errorMsg {
+  font-size: 14px;
+  color: var(--color-muted, #5A6080);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 520px) {
+  .page {
+    padding: 24px 12px 44px;
+  }
+
+  .placeNumber {
+    font-size: 36px;
+  }
+
+  .placeLabel {
+    font-size: 17px;
+  }
+
+  .infoCard {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .infoDivider {
+    width: 100%;
+    height: 1px;
+    margin: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb1,
+  .orb2,
+  .liveDot {
+    animation: none;
+  }
+
+  .pathAnimated {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+
+  .header,
+  .mapCard,
+  .legend,
+  .infoCard,
+  .loadingWrap,
+  .errorCard {
+    animation: none;
+  }
+}

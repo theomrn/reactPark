@@ -1,0 +1,17 @@
+{
+  "name": "reactpark",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix back\" \"npm run dev --prefix front\"",
+    "install:all": "npm install --prefix back && npm install --prefix front",
+    "test:unit:back": "npm test --prefix back",
+    "test:unit:front": "npm test --prefix front",
+    "test:unit": "concurrently \"npm run test:unit:back\" \"npm run test:unit:front\"",
+    "test:e2e": "playwright test --config e2e/playwright.config.js",
+    "test:all": "npm run test:unit && npm run test:e2e"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0",
+    "@playwright/test": "^1.48.0"
+  }
+}

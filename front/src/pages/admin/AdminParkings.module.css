@@ -1,0 +1,136 @@
+.container {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  color: var(--color-heading-on-bg);
+}
+
+.btnAdd {
+  padding: 0.55rem 1.1rem;
+  background: var(--color-accent);
+  color: var(--color-dark);
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: background 0.15s, transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btnAdd:hover {
+  background: var(--color-accent-hover);
+  transform: scale(1.06);
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-surface);
+}
+
+.table thead tr {
+  background: var(--color-dark);
+  color: #fff;
+}
+
+.table th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.table td {
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  color: var(--color-text);
+  border-top: 1px solid var(--color-border);
+}
+
+.alt {
+  background: var(--color-bg);
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btnEdit,
+.btnMap,
+.btnDelete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.15s;
+}
+
+.btnEdit:hover,
+.btnMap:hover,
+.btnDelete:hover {
+  transform: scale(1.25);
+}
+
+.btnEdit {
+  background: rgba(0, 160, 243, 0.12);
+  color: var(--color-secondary);
+  border: 1px solid var(--color-secondary);
+}
+
+.btnEdit:hover {
+  background: rgba(0, 160, 243, 0.25);
+}
+
+.btnMap {
+  background: rgba(46, 125, 50, 0.12);
+  color: #2E7D32;
+  border: 1px solid #2E7D32;
+}
+
+.btnMap:hover {
+  background: rgba(46, 125, 50, 0.25);
+}
+
+.btnDelete {
+  background: var(--color-danger);
+  color: #fff;
+}
+
+.btnDelete:hover {
+  background: var(--color-danger-hover);
+}
+
+.error {
+  color: var(--color-danger);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.empty {
+  text-align: center;
+  color: var(--color-muted);
+  padding: 2rem;
+}
