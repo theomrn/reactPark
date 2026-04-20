@@ -135,7 +135,11 @@ router.put('/:id/map', requireAdmin, wrap(async (req, res) => {
 router.delete('/:id', requireAdmin, wrap(async (req, res) => {
   const { id } = req.params
   try {
-    await prisma.parking.delete({ where: { id } })
+    await prisma.$transaction([
+      prisma.reservation.deleteMany({ where: { spot: { parkingId: id } } }),
+      prisma.spot.deleteMany({ where: { parkingId: id } }),
+      prisma.parking.delete({ where: { id } }),
+    ])
     return res.json({ data: { id }, error: null })
   } catch (e) {
     if (e.code === 'P2025') return notFound(res, 'Parking')

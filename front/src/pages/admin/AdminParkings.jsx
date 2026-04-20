@@ -21,10 +21,15 @@ export default function AdminParkings() {
   useEffect(load, [])
 
   async function handleDeleteConfirmed() {
-    const { error: err } = await deleteParking(confirmId)
-    setConfirmId(null)
-    if (err) setError(err)
-    else load()
+    try {
+      const { error: err } = await deleteParking(confirmId)
+      if (err) setError(err)
+      else load()
+    } catch {
+      setError('Impossible de supprimer le parking.')
+    } finally {
+      setConfirmId(null)
+    }
   }
 
   return (
