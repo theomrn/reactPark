@@ -11,6 +11,8 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@libsql/client": "^0.17.2",
+    "@prisma/adapter-libsql": "^5.22.0",
     "@prisma/client": "^5.22.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
@@ -19,10 +21,10 @@
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^2.1.0",
     "nodemon": "^3.1.7",
     "prisma": "^5.22.0",
-    "vitest": "^2.1.0",
-    "@vitest/coverage-v8": "^2.1.0",
-    "supertest": "^7.0.0"
+    "supertest": "^7.0.0",
+    "vitest": "^2.1.0"
   }
 }
